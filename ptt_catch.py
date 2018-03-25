@@ -20,13 +20,14 @@ url_target='https://pttweb.tw/c_chat/m-1484733503-a-59b.html'
 
 page=requests.get(url=url_target,headers=headers)#生成的page为reponse对象
 ptt_soup=BeautifulSoup(page.text, 'lxml')#创建一个soup对象
-#threats=ptt_soup.find_all(attrs={"href":re.compile('[c_chat]+/[^"]*')})
-print(re.findall('[c_chat]+/[^"]*',str(page.content)))
+threats=ptt_soup.find(class_='table table-striped borderless').find_all(text=re.compile('[c_chat]')) #先进行find()嵌套，find_all返回的result Set难以进行更多操作
+print(threats)
 
+'''
 with open('test.txt','w') as f:
-    for i in re.findall('/[^"]*',str(page.content)):
+    for i in re.findall('/[^"]*',str(page.content,re.S)):
         f.write(i)
-
+'''
 
 #正则：[c_chat]+/[^"]*
 
@@ -51,7 +52,7 @@ def fetch(url_target,i): #i为for循环次数作计数
         f.close
 for i in range(length()):#连接个数，用list长度决定
     i=1
-    url= "https://pttweb.tw/"+[i]
+    url= "https://pttweb.tw"+[i]
     fetch(url,i)
 '''
     

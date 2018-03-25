@@ -5,11 +5,8 @@ Created on Sat Mar 24 15:30:02 2018
 @author: Jackson Ma
 """
 import re
-import sys
 import requests
-import shutil
 from bs4 import BeautifulSoup
-from lxml import etree
 
 
 
@@ -20,16 +17,23 @@ url_target='https://pttweb.tw/c_chat/m-1484733503-a-59b.html'
 
 page=requests.get(url=url_target,headers=headers)#生成的page为reponse对象
 ptt_soup=BeautifulSoup(page.text, 'lxml')#创建一个soup对象
-threats=ptt_soup.find(class_='table table-striped borderless').find_all(text=re.compile('[c_chat]')) #先进行find()嵌套，find_all返回的result Set难以进行更多操作
-print(threats)
+threats=ptt_soup.find(class_='table table-striped borderless').find_all('a')
+n=0
+for i in list(threats):
+    if n==2:
+        break
+    print(str(i))
+    print(str(re.match('[\S]*',str(i))))
+    n+=1
+
+
+#(目前停用).find_all(text=re.compile("^/c_chat[\S]*html$")) #先进行find()嵌套，find_all返回的result Set难以进行更多操作
 
 '''
 with open('test.txt','w') as f:
     for i in re.findall('/[^"]*',str(page.content,re.S)):
         f.write(i)
 '''
-
-#正则：[c_chat]+/[^"]*
 
 '''
 def fetch(url_target,i): #i为for循环次数作计数

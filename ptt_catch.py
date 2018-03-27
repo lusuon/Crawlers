@@ -18,16 +18,13 @@ url_target='https://pttweb.tw/c_chat/m-1484733503-a-59b.html'
 page=requests.get(url=url_target,headers=headers)#生成的page为reponse对象
 ptt_soup=BeautifulSoup(page.text, 'lxml')#创建一个soup对象
 threats=ptt_soup.find(class_='table table-striped borderless').find_all('a')
-n=0
+links_list=[]
 for i in list(threats):
-    if n==2:
-        break
-    print(str(i))
-    print(str(re.match('[\S]*',str(i))))
-    n+=1
+    result=re.search(r"c[\S]*html",str(i))#尽量使用search(),而非match，否则难以匹配到理想结果
+    if result!=None: #返回SRE_Match object对象，注意用group()将其化成字符串
+        links_list.append(result.group())
+     
 
-
-#(目前停用).find_all(text=re.compile("^/c_chat[\S]*html$")) #先进行find()嵌套，find_all返回的result Set难以进行更多操作
 
 '''
 with open('test.txt','w') as f:
@@ -35,7 +32,7 @@ with open('test.txt','w') as f:
         f.write(i)
 '''
 
-'''
+
 def fetch(url_target,i): #i为for循环次数作计数
     headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36'
@@ -48,17 +45,16 @@ def fetch(url_target,i): #i为for循环次数作计数
         start_position=content.find('本文開始')
     end_position=content.find('發信站')
     out=content[(start_position)+4:end_position] 
-    time=ptt_soup.find(class_="table-sm borderless").text
+    time=ptt_soup.find(class_="post-time").text
     time_start_position=time.find('時間')
-    file_time=time[time_start_position+4:time_start_position+14]
+    file_time=time[time_start_position+4:time_start_position+13]
     with open("["+str(i)+"]-"+file_time+".txt",'a',encoding='utf-8') as f: #读写模式用引号括起，自动生成文件名用变量+'.txt'
         f.write(out)
         f.close
-for i in range(length()):#连接个数，用list长度决定
-    i=1
-    url= "https://pttweb.tw"+[i]
+for i in range(len(links_list)):#连接个数，用list长度决定
+    url="https://pttweb.tw/"+links_list[i]
     fetch(url,i)
-'''
+
     
     
     

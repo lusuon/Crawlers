@@ -45,8 +45,8 @@ headers = {
 }
 ptt_c_chat=requests.get(url='https://pttweb.tw/c_chat/',headers=headers)#response对象无法用bs解析，要传入content
 soup=BeautifulSoup(ptt_c_chat.content, 'lxml')
-print(soup.find(rel='prev'))
-
+prev_button=soup.find(rel='prev')#tag类型，获取值时用[]
+print(prev_button['href'])
 
 '''
 browser = webdriver.PhantomJS()

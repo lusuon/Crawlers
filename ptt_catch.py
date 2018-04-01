@@ -3,12 +3,14 @@
 Created on Sat Mar 24 15:30:02 2018
 
 @author: Jackson Ma
+Todo:
+    实现检测更新:
+        1.读取本地文件名中的时间
+        2.与页面对应元素进行比对：抓取时间 加入list 与末项比较
 """
 import re
 import requests
 from bs4 import BeautifulSoup
-
-
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36'
@@ -54,24 +56,3 @@ def fetch(url_target,i): #i为for循环次数作计数
 for i in range(len(links_list)):#连接个数，用list长度决定
     url="https://pttweb.tw/"+links_list[i]
     fetch(url,i)
-
-    
-    
-    
-    
-    
-
-
-
-
-
-'''
-#未完工的xpath解析
-html=etree.HTML(page.text)#将reponse对象的文本变为html
-result = etree.tostring(html) #此处直接解析html地址,而非reponse对象
-print(result.decode('utf-8'))
-
-html = etree.parse('./test.html', etree.HTMLParser())
-result = html.xpath('//*')
-print(result)
-'''
